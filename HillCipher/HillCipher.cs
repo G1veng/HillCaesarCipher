@@ -246,8 +246,12 @@ namespace HillCipher
     {
       string encriptedString = "";
       var intKey = GetMatrixFromKey(key);
+      int det = WorkWithMatrix.GetDeterminant(intKey);
       if (WorkWithMatrix.GetDeterminant(intKey) == 0) throw new DivideByZeroException();
-      if (GCD(WorkWithMatrix.GetDeterminant(intKey), LENGHTOFALPHABET) == WorkWithMatrix.GetDeterminant(intKey)) throw new DivideByZeroException();
+      if (GCD(WorkWithMatrix.GetDeterminant(intKey), LENGHTOFALPHABET) != 1) throw new DivideByZeroException();
+      var (x, y, z) = gcd(det, LENGHTOFALPHABET);
+      x = GetAntiDeterminant(det, x);
+      if (x == 0) throw new DivideByZeroException();
       var allIntMessage = GetVectorFromMessage(message, intKey.GetLength(0));
       for (int i = 0; i < GetCount(message.Length, intKey.GetLength(0)); i++)
       {
