@@ -4,7 +4,7 @@ using System.Text;
 
 namespace HillCipher
 {
-  class HillCipher : ICipher
+  public class HillCipher : ICipher
   {
     public const int LENGHTOFALPHABET = 37;
     private static int[,] GetMatrixFromKey(string key)
@@ -285,7 +285,7 @@ namespace HillCipher
         decription = Mod(decription);
         decryptedString += GetSymbols(decription);
       }
-      return decryptedString;
+      return decryptedString.Trim();
     }
   }
 }
