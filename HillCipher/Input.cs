@@ -4,7 +4,7 @@ using System.Text;
 
 namespace HillCipher
 {
-  class Input
+  class SomeInput
   {
     static public int GetInt()
     {

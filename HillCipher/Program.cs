@@ -19,16 +19,20 @@ namespace HillCipher
       do
       {
         count = 1;
-        Console.WriteLine(Environment.NewLine + Environment.NewLine + "1 - Console input" + Environment.NewLine
-          + "2 - File input" + Environment.NewLine + "3 - Random input" + Environment.NewLine + "4 - End program");
-        choice = Input.GetInt();
+        Console.WriteLine(Environment.NewLine + Environment.NewLine + "1 - Console Input" + Environment.NewLine
+          + "2 - File Input" + Environment.NewLine + "3 - Random Input" + Environment.NewLine + "4 - End program");
+        choice = SomeInput.GetInt();
         if ((GetInput.UserChoice)choice < GetInput.UserChoice.ConsoleInput || (GetInput.UserChoice)choice > GetInput.UserChoice.End)
         {
           Console.WriteLine("We don't have these choice, please try again");
           continue;
         }
+        if((GetInput.UserChoice)choice == GetInput.UserChoice.End)
+        {
+          break;
+        }
         someInput = GetInput.GetSomeInput(choice);
-        message = someInput.input();
+        message = someInput.Input();
         do
         {
           Console.WriteLine();
@@ -38,7 +42,7 @@ namespace HillCipher
             Console.WriteLine(count.ToString() + " - " + name);
             count++;
           }
-          choice = Input.GetInt();
+          choice = SomeInput.GetInt();
           if ((ICipher.Algorithms)choice < ICipher.Algorithms.HillCipher || (ICipher.Algorithms)choice > ICipher.Algorithms.CaesarCipher)
           {
             Console.WriteLine("We don't have these choice, please try again");
@@ -46,27 +50,26 @@ namespace HillCipher
           }
           algorithm = GetInput.GetAlgorithm(choice);
           Console.WriteLine();
-          if ((ICipher.Algorithms)choice == ICipher.Algorithms.HillCipher)
+          if (choice % 2 != 0)
           {
-            key = Input.GetStringKey();
+            key = SomeInput.GetStringKey();
             break;
           }
-          if ((ICipher.Algorithms)choice == ICipher.Algorithms.CaesarCipher)
-          {
-            key = Input.GetIntKey();
+          else {
+            key = SomeInput.GetIntKey();
             break;
           }
         } while (true);
         do
         {
           Console.WriteLine(Environment.NewLine + "1 - To Encode" + Environment.NewLine + "2 - To Decode");
-          choice = Input.GetInt();
+          choice = SomeInput.GetInt();
           if(choice == 1)
           {
             message = algorithm.Encode(message, key);
             Console.WriteLine("Encoded string: " + message);
             Console.WriteLine("Do you want to save data in file?" + Environment.NewLine + "1 - yes");
-            if(Input.GetInt() == 1)
+            if(SomeInput.GetInt() == 1)
             {
               File.SaveInFile(message);
             }
@@ -76,18 +79,18 @@ namespace HillCipher
             message = algorithm.Decode(message, key);
             Console.WriteLine("Decoded string: " + message);
             Console.WriteLine("Do you want to save data in file?" + Environment.NewLine + "1 - yes");
-            if (Input.GetInt() == 1)
+            if (SomeInput.GetInt() == 1)
             {
               File.SaveInFile(message);
             }
           }
-          else
+          if(choice > 2 && choice < 1 || choice == 0)
           {
             Console.WriteLine("We don't have these choice, please try again");
             continue;
           }
           Console.WriteLine(Environment.NewLine + "Enter 0 to return");
-          if (Input.GetInt() == 0)
+          if (SomeInput.GetInt() == 0)
             break;
         } while (true);
       }

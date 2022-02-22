@@ -6,12 +6,14 @@ namespace HillCipher
 {
   interface ICipher
   {
+    //Even numbers - cipher with int key
+    //Odd numbers - cipher with string key
     public enum Algorithms
     {
       HillCipher = 1,
-      CaesarCipher
+      CaesarCipher = 2,
     }
-    abstract string Encode(string message, string key);
-    abstract string Decode(string message, string key);
+    string Encode(string message, string key);
+    string Decode(string message, string key);
   }
 }

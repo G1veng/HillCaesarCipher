@@ -41,7 +41,7 @@ namespace HillCipher
       if (matrix.GetLength(0) == 0 && matrix.GetLength(1) == 0)
         return 1;
       if (matrix.GetLength(0) != matrix.GetLength(1))
-        throw new Exception("Матрица должна быть квадратной!");
+        throw new Exception("Mtrxi should be square!");
       if (matrix.GetLength(0) == 2)
         return matrix[0, 0] * matrix[1, 1] - matrix[0, 1] * matrix[1, 0];
       int sign = 1;

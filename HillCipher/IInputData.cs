@@ -7,11 +7,11 @@ namespace HillCipher
 {
   public interface IInputData
   {
-    string input();
+    string Input();
   }
   public class ManualInput : IInputData
   {
-    public string input()
+    public string Input()
     {
       string messageFromConsole;
       bool badData;
@@ -36,7 +36,7 @@ namespace HillCipher
       }
       while (true);
       Console.WriteLine("Do you want to save data in file?" + Environment.NewLine + "1 - yes");
-      if (Input.GetInt() == 1)
+      if (SomeInput.GetInt() == 1)
       {
         File.SaveInFile(messageFromConsole);
       }
@@ -48,7 +48,7 @@ namespace HillCipher
     const int LowerLimit = 5;
     const int UpperLimit = 12;
     static Random rnd = new Random();
-    public string input()
+    public string Input()
     {
       string randomString = "";
       int countOfNLetter = rnd.Next(LowerLimit, UpperLimit);
@@ -86,7 +86,7 @@ namespace HillCipher
       }
       Console.WriteLine(randomString);
       Console.WriteLine("Do you want to save data in file?" + Environment.NewLine + "1 - yes");
-      if (Input.GetInt() == 1)
+      if (SomeInput.GetInt() == 1)
       {
         File.SaveInFile(randomString);
       }
@@ -96,7 +96,7 @@ namespace HillCipher
 
   public class FileInput : IInputData
   {
-    public string input()
+    public string Input()
     {
       string stringFromFile = "";
       string path;

@@ -7,7 +7,7 @@ namespace HillCipher
   public class HillCipher : ICipher
   {
     public const int LENGHTOFALPHABET = 37;
-    private static int[,] GetMatrixFromKey(string key)
+    private int[,] GetMatrixFromKey(string key)
     {
       int size = key.Length;
       double result = Math.Sqrt(size);
@@ -69,7 +69,7 @@ namespace HillCipher
       }
       return matrixOfKey;
     }
-    private static int[,] GetVectorFromMessage(string message, int size)
+    private int[,] GetVectorFromMessage(string message, int size)
     {
       int lenghtOfMessage = message.Length;
       if (lenghtOfMessage % size != 0)
@@ -121,7 +121,7 @@ namespace HillCipher
       }
       return vectorOfMessage;
     }
-    private static int GetCount(int sizeOfMessage, int sizeOfOneDemention)
+    private int GetCount(int sizeOfMessage, int sizeOfOneDemention)
     {
       int lenghtOfMessage = sizeOfMessage;
       if (lenghtOfMessage % sizeOfOneDemention != 0)
@@ -131,7 +131,7 @@ namespace HillCipher
       lenghtOfMessage = lenghtOfMessage / sizeOfOneDemention;
       return lenghtOfMessage;
     }
-    private static int[,] GetNextPartOfMessage(int[,] matrix, int iteration)
+    private int[,] GetNextPartOfMessage(int[,] matrix, int iteration)
     {
       int[,] result = new int[1, matrix.GetLength(1)];
       for (int i = 0; i < matrix.GetLength(1); i++)
@@ -140,7 +140,7 @@ namespace HillCipher
       }
       return result;
     }
-    private static int[,] Mod(int[,] array)
+    private int[,] Mod(int[,] array)
     {
       int[,] result = new int[array.GetLength(0), array.GetLength(1)];
       for (int i = 0; i < array.GetLength(0); i++)
@@ -152,7 +152,7 @@ namespace HillCipher
       }
       return result;
     }
-    private static int[,] SumWithLenghtOfAlphabet(int[,] matrix)
+    private int[,] SumWithLenghtOfAlphabet(int[,] matrix)
     {
       for (int i = 0; i < matrix.GetLength(0); i++)
       {
@@ -166,7 +166,7 @@ namespace HillCipher
       }
       return matrix;
     }
-    private static string GetSymbols(int[,] array)
+    private string GetSymbols(int[,] array)
     {
       string result = "";
       for (int i = 0; i < array.GetLength(1); i++)
@@ -202,7 +202,7 @@ namespace HillCipher
       }
       return result;
     }
-    private static int GCD(int a, int b)
+    private int GCD(int a, int b)
     {
       while (b != 0)
       {
@@ -212,16 +212,16 @@ namespace HillCipher
       }
       return a;
     }
-    private static (int x, int y, int a) gcd(int a, int b)
+    private (int x, int y, int a) Gcd(int a, int b)
     {
       if (b == 0)
       {
         return (1, 0, a);
       }
-      var (y, x, g) = gcd(b, a % b);
+      var (y, x, g) = Gcd(b, a % b);
       return (x, y - ((int)(a / b) * x), g);
     }
-    private static int GetAntiDeterminant(int det, int x)
+    private int GetAntiDeterminant(int det, int x)
     {
       int toReturn = 0;
       if (det < 0 && x >= 0)
@@ -244,12 +244,18 @@ namespace HillCipher
     }
     public string Encode(string message, string key)
     {
+      foreach (char symbol in message)
+        if (int.TryParse(symbol.ToString(), out int ruslt))
+          throw new ArgumentNullException();
+      foreach (char symbol in key)
+        if (int.TryParse(symbol.ToString(), out int ruslt))
+          throw new ArgumentNullException();
       string encriptedString = "";
       var intKey = GetMatrixFromKey(key);
       int det = WorkWithMatrix.GetDeterminant(intKey);
       if (WorkWithMatrix.GetDeterminant(intKey) == 0) throw new DivideByZeroException();
       if (GCD(WorkWithMatrix.GetDeterminant(intKey), LENGHTOFALPHABET) != 1) throw new DivideByZeroException();
-      var (x, y, z) = gcd(det, LENGHTOFALPHABET);
+      var (x, y, z) = Gcd(det, LENGHTOFALPHABET);
       x = GetAntiDeterminant(det, x);
       if (x == 0) throw new DivideByZeroException();
       var allIntMessage = GetVectorFromMessage(message, intKey.GetLength(0));
@@ -264,6 +270,12 @@ namespace HillCipher
     }
     public string Decode(string message, string key)
     {
+      foreach (char symbol in message)
+        if (int.TryParse(symbol.ToString(), out int ruslt))
+          throw new ArgumentNullException();
+      foreach (char symbol in key)
+        if (int.TryParse(symbol.ToString(), out int ruslt))
+          throw new ArgumentNullException();
       string decryptedString = "";
       var intKey = GetMatrixFromKey(key);
       if (WorkWithMatrix.GetDeterminant(intKey) == 0) throw new DivideByZeroException();
@@ -273,7 +285,7 @@ namespace HillCipher
       {
         var intMessage = GetNextPartOfMessage(allIntMessage, i);
         int det = WorkWithMatrix.GetDeterminant(intKey);
-        var (x, y, z) = gcd(det, LENGHTOFALPHABET);
+        var (x, y, z) = Gcd(det, LENGHTOFALPHABET);
         x = GetAntiDeterminant(det, x);
         var decription = WorkWithMatrix.GetMatrixOfAlgebraicComplement(intKey);
         decription = Mod(decription);
