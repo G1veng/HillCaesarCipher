@@ -249,7 +249,7 @@ namespace HillCipher
           throw new ArgumentNullException();
       foreach (char symbol in key)
         if (int.TryParse(symbol.ToString(), out int ruslt))
-          throw new ArgumentNullException();
+          throw new ArgumentException();
       string encriptedString = "";
       var intKey = GetMatrixFromKey(key);
       int det = WorkWithMatrix.GetDeterminant(intKey);
