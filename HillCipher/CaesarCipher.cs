@@ -9,7 +9,7 @@ namespace HillCipher
     const string alfabet = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ., ?";
     private static string CodeEncode(string text, int k)
     {
-      var fullAlfabet = alfabet + alfabet.ToLower();
+      var fullAlfabet = alfabet;
       var letterQty = fullAlfabet.Length;
       var retVal = "";
       for (int i = 0; i < text.Length; i++)
@@ -38,10 +38,20 @@ namespace HillCipher
 
     public string Encode(string message, string key)
     {
+      foreach (char symbol in message)
+        if (int.TryParse(symbol.ToString(), out int ruslt))
+          throw new ArgumentNullException();
+      if (!int.TryParse(key, out int result))
+        throw new ArgumentNullException();
       return InnerEncode(message, Int32.Parse(key));
     }
     public string Decode(string message, string key)
     {
+      foreach (char symbol in message)
+        if (int.TryParse(symbol.ToString(), out int ruslt))
+          throw new ArgumentNullException();
+      if (!int.TryParse(key, out int result))
+        throw new ArgumentNullException();
       return InnerDecode(message, Int32.Parse(key));
     }
   }

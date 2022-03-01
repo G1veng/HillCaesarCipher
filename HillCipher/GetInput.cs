@@ -30,7 +30,6 @@ namespace HillCipher
       }
       return someInput;
     }
-
     static public ICipher GetAlgorithm(int choice)
     {
       if((ICipher.Algorithms)choice == ICipher.Algorithms.CaesarCipher)

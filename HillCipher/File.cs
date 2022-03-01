@@ -38,7 +38,7 @@ namespace HillCipher
           else
           {
             Console.WriteLine("Do you want to rewrite file?" + Environment.NewLine + "1 - Yes");
-            if (Input.GetInt() != 1)
+            if (SomeInput.GetInt() != 1)
             {
               continue;
             }
