@@ -29,8 +29,22 @@ namespace HillCipher
 
       return retVal;
     }
+    private void CheckData(string message, string key)
+    {
+      for (int i = 0; i < message.Length; i++)
+      {
+        int asciCode = message[i];
+        if (!(asciCode >= 'А' && asciCode <= 'Д') & !(asciCode == 'Ё') & !(asciCode > 'Д' && asciCode <= 'Я') & !(asciCode == '.')
+          & !(asciCode == ',') & !(asciCode == ' ') & !(asciCode == '?'))
+        {
+          throw new ArgumentException();
+        }
+      }
+      if (!int.TryParse(key, out int result))
+        throw new ArgumentException();
+    }
 
-    private static string InnerEncode(string plainMessage, int key)
+      private static string InnerEncode(string plainMessage, int key)
         => CodeEncode(plainMessage, key);
 
     private static string InnerDecode(string encryptedMessage, int key)
@@ -38,20 +52,12 @@ namespace HillCipher
 
     public string Encode(string message, string key)
     {
-      foreach (char symbol in message)
-        if (int.TryParse(symbol.ToString(), out int ruslt))
-          throw new ArgumentNullException();
-      if (!int.TryParse(key, out int result))
-        throw new ArgumentNullException();
+      CheckData(message, key);
       return InnerEncode(message, Int32.Parse(key));
     }
     public string Decode(string message, string key)
     {
-      foreach (char symbol in message)
-        if (int.TryParse(symbol.ToString(), out int ruslt))
-          throw new ArgumentNullException();
-      if (!int.TryParse(key, out int result))
-        throw new ArgumentNullException();
+      CheckData(message, key);
       return InnerDecode(message, Int32.Parse(key));
     }
   }

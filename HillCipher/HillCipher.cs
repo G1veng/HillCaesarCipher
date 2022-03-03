@@ -7,6 +7,28 @@ namespace HillCipher
   public class HillCipher : ICipher
   {
     public const int LENGHTOFALPHABET = 37;
+
+    private void CheckData(string message, string key)
+    {
+      for (int i = 0; i < message.Length; i++)
+      {
+        int asciCode = message[i];
+        if (!(asciCode >= 'А' && asciCode <= 'Д') & !(asciCode == 'Ё') & !(asciCode > 'Д' && asciCode <= 'Я') & !(asciCode == '.')
+          & !(asciCode == ',') & !(asciCode == ' ') & !(asciCode == '?'))
+        {
+          throw new ArgumentException();
+        }
+      }
+      for(int i = 0; i < key.Length; i++)
+      {
+        int asciCode = key[i];
+        if (!(asciCode >= 'А' && asciCode <= 'Д') & !(asciCode == 'Ё') & !(asciCode > 'Д' && asciCode <= 'Я') & !(asciCode == '.')
+          & !(asciCode == ',') & !(asciCode == ' ') & !(asciCode == '?'))
+        {
+          throw new ArgumentException();
+        }
+      }
+    }
     private int[,] GetMatrixFromKey(string key)
     {
       int size = key.Length;
@@ -244,16 +266,11 @@ namespace HillCipher
     }
     public string Encode(string message, string key)
     {
-      foreach (char symbol in message)
-        if (int.TryParse(symbol.ToString(), out int ruslt))
-          throw new ArgumentNullException();
-      foreach (char symbol in key)
-        if (int.TryParse(symbol.ToString(), out int ruslt))
-          throw new ArgumentException();
+      CheckData(message, key);
       string encriptedString = "";
       var intKey = GetMatrixFromKey(key);
       int det = WorkWithMatrix.GetDeterminant(intKey);
-      if (WorkWithMatrix.GetDeterminant(intKey) == 0) throw new DivideByZeroException();
+      if (WorkWithMatrix.GetDeterminant(intKey) == 0) throw new ArgumentNullException();
       if (GCD(WorkWithMatrix.GetDeterminant(intKey), LENGHTOFALPHABET) != 1) throw new DivideByZeroException();
       var (x, y, z) = Gcd(det, LENGHTOFALPHABET);
       x = GetAntiDeterminant(det, x);
@@ -270,15 +287,10 @@ namespace HillCipher
     }
     public string Decode(string message, string key)
     {
-      foreach (char symbol in message)
-        if (int.TryParse(symbol.ToString(), out int ruslt))
-          throw new ArgumentNullException();
-      foreach (char symbol in key)
-        if (int.TryParse(symbol.ToString(), out int ruslt))
-          throw new ArgumentNullException();
+      CheckData(message, key);
       string decryptedString = "";
       var intKey = GetMatrixFromKey(key);
-      if (WorkWithMatrix.GetDeterminant(intKey) == 0) throw new DivideByZeroException();
+      if (WorkWithMatrix.GetDeterminant(intKey) == 0) throw new ArgumentNullException();
       if (GCD(WorkWithMatrix.GetDeterminant(intKey), LENGHTOFALPHABET) == WorkWithMatrix.GetDeterminant(intKey)) throw new DivideByZeroException();
       var allIntMessage = GetVectorFromMessage(message, intKey.GetLength(0));
       for (int i = 0; i < GetCount(message.Length, intKey.GetLength(0)); i++)

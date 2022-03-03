@@ -5,6 +5,11 @@ namespace HillCipher
 {
   class Program
   {
+    enum Coding
+    {
+      Encoding = 1,
+      Decoding,
+    }
     static void Main(string[] args)
     {
       string key, message;
@@ -64,7 +69,7 @@ namespace HillCipher
         {
           Console.WriteLine(Environment.NewLine + "1 - To Encode" + Environment.NewLine + "2 - To Decode");
           choice = SomeInput.GetInt();
-          if(choice == 1)
+          if(choice == (int)Coding.Encoding)
           {
             message = algorithm.Encode(message, key);
             Console.WriteLine("Encoded string: " + message);
@@ -74,7 +79,7 @@ namespace HillCipher
               File.SaveInFile(message);
             }
           }
-          if (choice == 2)
+          if (choice == (int)Coding.Decoding)
           {
             message = algorithm.Decode(message, key);
             Console.WriteLine("Decoded string: " + message);
@@ -84,7 +89,7 @@ namespace HillCipher
               File.SaveInFile(message);
             }
           }
-          if(choice > 2 && choice < 1 || choice == 0)
+          if(!(choice <= (int)Coding.Decoding && choice >= (int)Coding.Encoding))
           {
             Console.WriteLine("We don't have these choice, please try again");
             continue;
